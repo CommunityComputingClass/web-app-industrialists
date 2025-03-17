@@ -1,5 +1,6 @@
 let land;
 let house;
+let road;
 let highlightTile;
 let tiles = [];
 let houses = [];
@@ -8,6 +9,7 @@ function preload() {
   land = loadImage("assets/land.png");
   house = loadImage("assets/house.png");
   highlightTile = loadImage("assets/highlightTile.png");
+  road = loadImage("assets/road.png")
 }
 
 function setup() {
@@ -27,7 +29,7 @@ function draw() {
   Building.place(House);
   houses.sort((a, b) => a.y - b.y);
   for (let i in houses) {
-    houses[i].show(house);
+    houses[i].show();
   }
 }
 
@@ -61,9 +63,7 @@ class Building {
     this.y = y;
   }
 
-  show(asset) {
-    image(asset, this.x + 5, this.y - 26);
-  }
+
 
   static place(type) {
     for (let i in tiles) {
@@ -94,6 +94,10 @@ class Building {
 class House extends Building {
   constructor(x, y) {
     super(x, y);
+  }
+
+  show() {
+    image(house, this.x + 5, this.y - 26);
   }
 }
 
