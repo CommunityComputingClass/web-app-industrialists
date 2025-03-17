@@ -5,6 +5,17 @@ let highlightTile;
 let tiles = [];
 let houses = [];
 
+let game ={
+  mapW: 30,
+  mapH: 30,
+  transX: 425,
+  transY: 50,
+  scale: 1
+}
+let mouse = {
+  x: 0,
+  y: 0
+}
 function preload() {
   land = loadImage("assets/land.png");
   house = loadImage("assets/house.png");
@@ -16,17 +27,27 @@ function setup() {
   createCanvas(900, 600);
   noSmooth();
   Tile.findPoints();
+
+  tiles[0].full = Road;
+  houses.push(new Road(0, 0))
+  //tiles[game.mapW*game.mapH].full = Road;
+  //houses.push(new Road(tiles[game.mapW*game.mapH].x, tiles[game.mapW*game.mapH].y))
+
 }
 
 function draw() {
   background(220);
-  translate(425, 100);
+  translate(game.transX, game.transY);
+  scale(game.scale)
+  //mouse
+  mouse.x = (mouseX - game.transX)/game.scale
+  mouse.y = (mouseY - game.transY)/game.scale
 
   for (let i in tiles) {
     tiles[i].show();
   }
 
-  Building.place(House);
+  Building.place(Road);
   houses.sort((a, b) => a.y - b.y);
   for (let i in houses) {
     houses[i].show();
@@ -49,8 +70,8 @@ class Tile {
   }
 
   static findPoints() {
-    for (let j = 0; j < 30; j++) {
-      for (let i = 0; i < 30; i++) {
+    for (let j = 0; j < game.mapW; j++) {
+      for (let i = 0; i < game.mapH; i++) {
         tiles.push(new Tile(i * 14 - j * 14, i * 7 + j * 7));
       }
     }
@@ -63,14 +84,12 @@ class Building {
     this.y = y;
   }
 
-
-
   static place(type) {
     for (let i in tiles) {
       if (
         findDistance(
-          mouseX - 425,
-          mouseY - 100,
+          mouse.x,
+          mouse.y,
           tiles[i].x + 15,
           tiles[i].y + 8
         ) < 7
@@ -80,15 +99,39 @@ class Building {
         this.x = tiles[i].x;
         this.y = tiles[i].y;
 
-        if (mouseIsPressed && tiles[i].full == false) {
+        if (mouseIsPressed && tiles[i].full == false && Building.findRoad(tiles[i])) {
           houses.push(new type(this.x, this.y));
-          tiles[i].full = true;
+          tiles[i].full = type;
         }
       } else {
         tiles[i].highlight = false;
       }
     }
   }
+  static findRoad(tile){
+    let tileIndex;
+    for(let i in tiles){
+      if(tiles[i] == tile){
+        tileIndex = parseInt(i)
+      }
+    }
+
+    if(tiles[tileIndex+1].full == Road){
+      return true;
+    }
+    if(tiles[tileIndex-1].full == Road){
+      return true;
+    }
+    if(tiles[tileIndex-game.mapW].full == Road){
+      return true;
+    }
+    if(tiles[tileIndex+game.mapW].full == Road){
+      return true;
+    }
+
+    //return true;
+  }
+
 }
 
 class House extends Building {
@@ -103,8 +146,10 @@ class House extends Building {
 
 class Road extends Building{
   constructor(x, y){
-    this.x = x;
-    this.y = y
+    super(x, y)
+  }
+  show() {
+    image(road, this.x, this.y);
   }
 
 }
