@@ -16,6 +16,8 @@ let mouse = {
   x: 0,
   y: 0
 }
+
+let mode = 1;
 function preload() {
   land = loadImage("assets/land.png");
   house = loadImage("assets/house.png");
@@ -46,8 +48,13 @@ function draw() {
   for (let i in tiles) {
     tiles[i].show();
   }
+  if(mode == 1){
+    Building.place(Road);
+  }
+  if(mode == 2){
+    Building.place(House);
+  }
 
-  Building.place(Road);
   houses.sort((a, b) => a.y - b.y);
   for (let i in houses) {
     houses[i].show();
@@ -115,19 +122,98 @@ class Building {
         tileIndex = parseInt(i)
       }
     }
+    if(tileIndex == game.mapW-1){
 
-    if(tiles[tileIndex+1].full == Road){
-      return true;
+      //Top Left
+      if(tiles[tileIndex-1].full == Road){
+        return true;
+      }
+      //Bottom Left
+      if(tiles[tileIndex+game.mapW].full == Road){
+        return true;
+      }
+    }else if(tileIndex == game.mapW*game.mapH - game.mapW){
+//Bottom Right
+      if(tiles[tileIndex+1].full == Road){
+        return true;
     }
+//Top Right
+      if(tiles[tileIndex-game.mapW].full == Road){
+        return true;
+      }
+    }else if(tileIndex > game.mapW*game.mapH - game.mapW){
+//Bottom Right
+      if(tiles[tileIndex+1].full == Road){
+        return true;
+    }
+//Top Left
+      if(tiles[tileIndex-1].full == Road){
+        return true;
+    }
+//Top Right
+      if(tiles[tileIndex-game.mapW].full == Road){
+        return true;
+    }
+    }else if(tileIndex % 30 == 0){
+//Bottom Right
+      if(tiles[tileIndex+1].full == Road){
+        return true;
+    }
+//Top Right
+      if(tiles[tileIndex-game.mapW].full == Road){
+        return true;
+      }
+//Bottom Left
+        if(tiles[tileIndex+game.mapW].full == Road){
+          return true;
+      }
+    }else if((tileIndex+1) % 30 == 0){
+//Top Left
     if(tiles[tileIndex-1].full == Road){
       return true;
     }
+//Top Right
     if(tiles[tileIndex-game.mapW].full == Road){
-      return true;
+     return true;
     }
+//Bottom Left
     if(tiles[tileIndex+game.mapW].full == Road){
       return true;
     }
+    }else if(tileIndex < game.mapW){
+//Top Left
+    if(tiles[tileIndex-1].full == Road){
+      return true;
+    }
+//Bottom Left
+    if(tiles[tileIndex+game.mapW].full == Road){
+      return true;
+    }
+//Bottom Right
+    if(tiles[tileIndex+1].full == Road){
+      return true;
+      }
+    }
+    else{
+//Bottom Right
+    if(tiles[tileIndex+1].full == Road){
+      return true;
+    }
+//Top Left
+    if(tiles[tileIndex-1].full == Road){
+      return true;
+    }
+//Top Right
+    if(tiles[tileIndex-game.mapW].full == Road){
+     return true;
+    }
+//Bottom Left
+    if(tiles[tileIndex+game.mapW].full == Road){
+      return true;
+    }
+    }
+      
+    
 
     //return true;
   }
@@ -156,4 +242,13 @@ class Road extends Building{
 
 function findDistance(x1, y1, x2, y2) {
   return Math.sqrt((y2 - y1) ** 2 + (x2 - x1) ** 2);
+}
+
+function keyPressed(){
+  if(key === "1"){
+    mode = 1;
+  }
+  if(key === "2"){
+    mode = 2
+  }
 }
