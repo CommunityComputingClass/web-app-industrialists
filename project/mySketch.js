@@ -15,8 +15,15 @@ let player = {
   money: 1000,
   pollution: 0,
   population: 0,
-  houseCount: 0
+
 };
+let owned = {
+  roads: 0,
+  houses: 0,
+  factories: 0,
+  trees: 0
+
+}
 
 let game = {
   mapW: 100,
@@ -41,7 +48,7 @@ let mode = 1;
 function preload() {
   land = loadImage("assets/land.png");
   house = loadImage("assets/house.png");
-  factory = loadImage("assets/Factory.png");
+  factory = loadImage("assets/factory.png");
   highlightTile = loadImage("assets/highlightTile.png");
   road = loadImage("assets/road.png");
   coin = loadImage("assets/coin.png");
@@ -60,8 +67,8 @@ function setup() {
 
 function draw() {
   background(220);
-    moneyTracker();
-  
+
+  push()
   translate(game.transX, game.transY);
   scale(game.scale);
   //mouse
@@ -88,14 +95,27 @@ function draw() {
   }
 
   if (mode == 1) {
-    Building.place(Road);
+    if(player.money >= prices.road){
+      Building.place(Road);
+    }
+
   }
   if (mode == 2) {
-    Building.place(House);
+    if(player.money >= prices.house){
+      Building.place(House);
+    }
+
   }
   if (mode == 3) {
-    Building2.place(Factory);
+    if(player.money >= prices.factory){
+      Building2.place(Factory);
+    }
+
   }
+
+  pop()
+
+  moneyTracker();
 }
 
 class Tile {
@@ -156,33 +176,6 @@ class Building {
       }
     }
   }
-
-  //laggy asf
-  /*static delete() {
-    for (let i in tiles) {
-      let tileIndex;
-      for (let j in tiles) {
-        if (tiles[j] == houses[i]) {
-          tileIndex = parseInt(i);
-        }
-      }
-
-      if (findDistance(mouse.x, mouse.y, tiles[i].x + 15, tiles[i].y + 8) < 7) {
-        tiles[i].highlight = true;
-        //console.log(tiles[i].highlight)
-        this.x = tiles[i].x;
-        this.y = tiles[i].y;
-
-        if (mouseIsPressed && tiles[i].full) {
-          houses.splice(houses.indexOf(houses[tileIndex]), 1);
-          tiles[i].full = false;
-          console.log("a");
-        }
-      } else {
-        tiles[i].highlight = false;
-      }
-    }
-  }*/
 
   static findRoad(tile) {
     let tileIndex;
@@ -477,9 +470,17 @@ function keyPressed() {
     }
   }
   if (key === " "){
-    player.money = player.money + houseCount*5
-    player.money = player.money + factoryCount*50
+    takeTurn()
   }
+
+  if (key === "h") {
+    countPlaced()
+    console.log(owned.houses)
+    console.log(owned.roads)
+    console.log(owned.factories)
+  }
+  
+
 }
 
 function findDistance(x1, y1, x2, y2) {
@@ -493,3 +494,28 @@ function moneyTracker() {
   text(player.money, 905,40);
   image(coin, 850,21,);
 }
+
+function countPlaced(){
+  owned.houses = 0;
+  owned.roads = 0;
+  owned.factories = 0;
+  for (let i = 0; i < houses.length; i++) {
+    if (houses[i].constructor.name === "House") {
+      owned.houses++;
+    }
+    if (houses[i].constructor.name === "Road"){
+      owned.roads++;
+    }
+    if (houses[i].constructor.name === "Factory"){
+      owned.factories++;
+    }
+  }
+}
+function takeTurn(){
+  countPlaced()
+  player.money += owned.houses*10
+  player.money += owned.factories*500
+  player.round ++
+}
+
+
