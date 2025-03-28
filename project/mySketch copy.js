@@ -9,13 +9,12 @@ let displayHouses = [];
 let smoke = [];
 let actions = [];
 let coin;
-let billspaid = false;
 
 let player = {
   round: 1,
   money: 1000,
   pollution: 0,
-  population: 10,
+  population: 0,
 
 };
 let owned = {
@@ -113,7 +112,6 @@ function draw() {
     }
   }
   pop()
-  countPlaced();
   bills();
   moneyTracker();
 }
@@ -479,15 +477,7 @@ function keyPressed() {
     console.log(owned.roads)
     console.log(owned.factories)
   }
-  if (key === "b"){
-    if (billspaid == false){
-      player.money = player.money - owned.roads*2-owned.houses*3-owned.factories*5
-      billspaid = true;
-    }
-    if (player.money < owned.roads*2-owned.houses*3-owned.factories*5){
-      lose (); 
-    }
-  }
+  
 
 }
 
@@ -499,12 +489,10 @@ function moneyTracker() {
   fill("white")
   rect(900,20,60,30);
   rect(800,20,60,30);
-  rect(700, 20, 60, 30)
   fill("black")
   text(player.money, 905,40);
   image(coin, 850,21,);
   text(player.population, 805, 40);
-  text(owned.houses*4, 705, 40)
 }
 
 function countPlaced(){
@@ -524,40 +512,21 @@ function countPlaced(){
   }
 }
 function takeTurn(){
-  if (billspaid === true){
-    countPlaced()
-    player.money += owned.houses*10
-    player.money += owned.factories*500
-    player.round ++
-    billspaid = false;
-    player.population = Math.round(player.population*1.1)
-    player.pollution += owned.factories * 10
-    if (player.population > owned.houses*4){
-        lose();
-    }
-  }
+  countPlaced()
+  player.money += owned.houses*10
+  player.money += owned.factories*500
+  player.round ++
 }
 
 function bills (){
   fill(255)
   noStroke()
-  rect (0,0,180,120)
-  if (billspaid === false){
-    fill(255,0,0)
-  }
-  if (billspaid === true){
-    fill(0,150,0)
-  }
+  rect (0,0,180,100)
+  fill(0)
   textSize (15);
-  text ("Bills Per Year",0,20)
+  text ("Press B for Bills",0,20)
   text ("Road Maintnance - $"+ owned.roads*2,0,40)
   text ("House Maintnance - $"+ owned.houses*3,0, 60)
   text ("Factory Maintnance - $"+ owned.factories*5,0, 80)
-  text ("Press B to Pay Bills", 0, 100)
-}
-
-function lose(){
-  window.open ("https://www.youtube.com/watch?v=dQw4w9WgXcQ")
-  window.close();
 }
 
