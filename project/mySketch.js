@@ -9,6 +9,7 @@ let displayHouses = [];
 let smoke = [];
 let actions = [];
 let coin;
+let billspaid = false;
 
 let player = {
   round: 1,
@@ -477,7 +478,15 @@ function keyPressed() {
     console.log(owned.roads)
     console.log(owned.factories)
   }
-  
+  if (key === "b"){
+    if (billspaid == false){
+      player.money = player.money - owned.roads*2-owned.houses*3-owned.factories*5
+      billspaid = true;
+    }
+    if (player.money < owned.roads*2-owned.houses*3-owned.factories*5){
+      lose (); 
+    }
+  }
 
 }
 
@@ -510,21 +519,34 @@ function countPlaced(){
   }
 }
 function takeTurn(){
-  countPlaced()
-  player.money += owned.houses*10
-  player.money += owned.factories*500
-  player.round ++
+  if (billspaid === true){
+    countPlaced()
+    player.money += owned.houses*10
+    player.money += owned.factories*500
+    player.round ++
+    billspaid = false;
+  }
 }
 
 function bills (){
   fill(255)
   noStroke()
-  rect (0,0,180,100)
-  fill(0)
+  rect (0,0,180,120)
+  if (billspaid === false){
+    fill(255,0,0)
+  }
+  if (billspaid === true){
+    fill(0,150,0)
+  }
   textSize (15);
-  text ("Press B for Bills",0,20)
+  text ("Bills Per Year",0,20)
   text ("Road Maintnance - $"+ owned.roads*2,0,40)
   text ("House Maintnance - $"+ owned.houses*3,0, 60)
   text ("Factory Maintnance - $"+ owned.factories*5,0, 80)
+  text ("Press B to Pay Bills", 0, 100)
+}
+
+function lose(){
+  window.open ("https://www.youtube.com/watch?v=dQw4w9WgXcQ")
 }
 
