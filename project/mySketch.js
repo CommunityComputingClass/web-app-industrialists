@@ -540,6 +540,8 @@ function takeTurn(){
     player.money += owned.houses*10
     player.money += owned.factories*500
     player.round ++
+    player.population = Math.round(player.population*1.1)
+    player.pollution += owned.factories * 10
     billspaid = false;
     player.population = Math.round(player.population*1.1)
     player.pollution += owned.factories * 10
