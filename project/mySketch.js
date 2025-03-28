@@ -110,11 +110,9 @@ function draw() {
     if(player.money >= prices.factory){
       Building2.place(Factory);
     }
-
   }
-
   pop()
-
+  bills();
   moneyTracker();
 }
 
@@ -518,4 +516,15 @@ function takeTurn(){
   player.round ++
 }
 
+function bills (){
+  fill(255)
+  noStroke()
+  rect (0,0,180,100)
+  fill(0)
+  textSize (15);
+  text ("Press B for Bills",0,20)
+  text ("Road Maintnance = "+ owned.roads*2,0,40)
+  text ("House Maintnance = "+ owned.houses*3,0, 60)
+  text ("Factory Maintnance = "+ owned.factories*5,0, 80)
+}
 
