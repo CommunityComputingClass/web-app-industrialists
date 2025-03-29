@@ -53,12 +53,14 @@ function preload() {
   highlightTile = loadImage("assets/highlightTile.png");
   road = loadImage("assets/road.png");
   coin = loadImage("assets/coin.png");
+  myFont = loadFont ("assets/minecraftFont.otf")
 }
 
 function setup() {
   createCanvas(1000, 600);
   noSmooth();
   Tile.findPoints();
+  textFont(myFont);
 
   tiles[0].full = Road;
   houses.push(new Road(0, 0));
@@ -481,10 +483,10 @@ function keyPressed() {
   }
   if (key === "b"){
     if (billspaid == false){
-      player.money = player.money - owned.roads*2-owned.houses*3-owned.factories*5
+      player.money -= owned.roads*2-owned.houses*3-owned.factories*5
       billspaid = true;
     }
-    if (player.money < owned.roads*2-owned.houses*3-owned.factories*5){
+    if (player.money < owned.roads*2 - owned.houses*3 - owned.factories*5){
       lose (); 
     }
   }
@@ -532,7 +534,7 @@ function takeTurn(){
     billspaid = false;
     player.population = Math.round(player.population*1.1)
     player.pollution += owned.factories * 10
-    if (player.population > owned.houses*4){
+    if (player.population >= owned.houses*4){
         lose();
     }
   }
@@ -541,7 +543,7 @@ function takeTurn(){
 function bills (){
   fill(255)
   noStroke()
-  rect (0,0,180,120)
+  rect (0,0,240,130)
   if (billspaid === false){
     fill(255,0,0)
   }
@@ -550,10 +552,10 @@ function bills (){
   }
   textSize (15);
   text ("Bills Per Year",0,20)
-  text ("Road Maintnance - $"+ owned.roads*2,0,40)
-  text ("House Maintnance - $"+ owned.houses*3,0, 60)
-  text ("Factory Maintnance - $"+ owned.factories*5,0, 80)
-  text ("Press B to Pay Bills", 0, 100)
+  text ("Road Maintnance - $"+ owned.roads*2,0,45)
+  text ("House Maintnance - $"+ owned.houses*3,0, 65)
+  text ("Factory Maintnance - $"+ owned.factories*5,0, 85)
+  text ("Press B to Pay Bills", 0, 110)
 }
 
 function lose(){
