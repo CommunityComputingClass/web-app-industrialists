@@ -52,6 +52,7 @@ function preload() {
   highlightTile = loadImage("assets/highlightTile.png");
   road = loadImage("assets/road.png");
   coin = loadImage("assets/coin.png");
+  person = loadImage("assets/person.png");
 }
 
 function setup() {
@@ -491,7 +492,7 @@ function moneyTracker() {
   rect(800,20,60,30);
   fill("black")
   text(player.money, 905,40);
-  image(coin, 850,21,);
+  image(coin,850,21,);
   text(player.population, 805, 40);
 }
 

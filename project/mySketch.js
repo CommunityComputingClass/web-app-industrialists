@@ -56,6 +56,8 @@ function preload() {
   myFont = loadFont ("assets/minecraftFont.otf")
   billBoard = loadImage ("assets/billBoard.png")
   moneyBoard = loadImage ("assets/moneyBoard.png")
+  person = loadImage ("assets/person.png")
+  houseIcon = loadImage ("assets/houseIcon.png")
 }
 
 function setup() {
@@ -503,12 +505,14 @@ function moneyTracker() {
   fill("white")
   image(moneyBoard,900,15)
   image(moneyBoard,770,15)
-  image(moneyBoard,670,15)
+  image(moneyBoard,640,15)
   fill("black")
-  text(player.money, 907,40);
   image(coin, 850,21,);
+  text(player.money, 907,40);
+  image(houseIcon,600,21);
   text(player.population, 777, 40);
-  text(owned.houses*4, 677, 40)
+  image(person,735,21);
+  text(owned.houses*4, 647, 40)
 }
 
 function countPlaced(){
