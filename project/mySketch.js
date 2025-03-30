@@ -54,6 +54,8 @@ function preload() {
   road = loadImage("assets/road.png");
   coin = loadImage("assets/coin.png");
   myFont = loadFont ("assets/minecraftFont.otf")
+  billBoard = loadImage ("assets/billBoard.png")
+  moneyBoard = loadImage ("assets/moneyBoard.png")
 }
 
 function setup() {
@@ -499,14 +501,14 @@ function findDistance(x1, y1, x2, y2) {
 
 function moneyTracker() {
   fill("white")
-  rect(900,20,60,30);
-  rect(800,20,60,30);
-  rect(700, 20, 60, 30)
+  image(moneyBoard,900,15)
+  image(moneyBoard,770,15)
+  image(moneyBoard,670,15)
   fill("black")
-  text(player.money, 905,40);
+  text(player.money, 907,40);
   image(coin, 850,21,);
-  text(player.population, 805, 40);
-  text(owned.houses*4, 705, 40)
+  text(player.population, 777, 40);
+  text(owned.houses*4, 677, 40)
 }
 
 function countPlaced(){
@@ -543,7 +545,7 @@ function takeTurn(){
 function bills (){
   fill(255)
   noStroke()
-  rect (0,0,240,130)
+  image(billBoard,0,0)
   if (billspaid === false){
     fill(255,0,0)
   }
@@ -551,11 +553,11 @@ function bills (){
     fill(0,150,0)
   }
   textSize (15);
-  text ("Bills Per Year",0,20)
-  text ("Road Maintnance - $"+ owned.roads*2,0,45)
-  text ("House Maintnance - $"+ owned.houses*3,0, 65)
-  text ("Factory Maintnance - $"+ owned.factories*5,0, 85)
-  text ("Press B to Pay Bills", 0, 110)
+  text ("Bills Per Year",70,22)
+  text ("Road Maintnance - $"+ owned.roads*2,10,55)
+  text ("House Maintnance - $"+ owned.houses*3,10, 75)
+  text ("Factory Maintnance - $"+ owned.factories*5,10, 95)
+  text ("Press B to Pay Bills", 40, 120)
 }
 
 function lose(){
