@@ -54,6 +54,11 @@ function preload() {
   highlightTile = loadImage("assets/highlightTile.png");
   road = loadImage("assets/road.png");
   coin = loadImage("assets/coin.png");
+  myFont = loadFont ("assets/minecraftFont.otf")
+  billBoard = loadImage ("assets/billBoard.png")
+  moneyBoard = loadImage ("assets/moneyBoard.png")
+  person = loadImage ("assets/person.png")
+  houseIcon = loadImage ("assets/houseIcon.png")
   person = loadImage("assets/person.png");
 }
 
@@ -61,6 +66,7 @@ function setup() {
   createCanvas(1000, 600);
   noSmooth();
   Tile.findPoints();
+  textFont(myFont);
 
   tiles[0].full = Road;
   houses.push(new Road(0, 0));
@@ -483,10 +489,10 @@ function keyPressed() {
   }
   if (key === "b"){
     if (billspaid == false){
-      player.money = player.money - owned.roads*2-owned.houses*3-owned.factories*5
+      player.money -= owned.roads*2-owned.houses*3-owned.factories*5
       billspaid = true;
     }
-    if (player.money < owned.roads*2-owned.houses*3-owned.factories*5){
+    if (player.money < owned.roads*2 - owned.houses*3 - owned.factories*5){
       lose (); 
     }
   }
@@ -499,16 +505,18 @@ function findDistance(x1, y1, x2, y2) {
 
 function moneyTracker() {
   fill("white")
-  rect(900,20,60,30);
-  rect(800,20,60,30);
-  rect(700, 20, 60, 30)
+  image(moneyBoard,900,15)
+  image(moneyBoard,770,15)
+  image(moneyBoard,640,15)
   fill("black")
-  text(player.money, 905,40);
   image(coin, 850,21,);
-  text(player.population, 805, 40);
+  text(player.money, 907,40);
+  image(houseIcon,600,21);
+  text(player.population, 777, 40);
+  image(person,735,21);
   person.resize(20,40)
   image(person, 774, 15)
-  text(owned.houses*4, 705, 40)
+  text(owned.houses*4, 647, 40)
   image(house, 670, 18)
 }
 
@@ -537,7 +545,7 @@ function takeTurn(){
     billspaid = false;
     player.population = Math.round(player.population*1.1)
     player.pollution += owned.factories * 10
-    if (player.population > owned.houses*4){
+    if (player.population >= owned.houses*4){
         lose();
     }
   }
@@ -546,7 +554,7 @@ function takeTurn(){
 function bills (){
   fill(255)
   noStroke()
-  rect (0,0,180,120)
+  image(billBoard,0,0)
   if (billspaid === false){
     fill(255,0,0)
   }
@@ -554,11 +562,11 @@ function bills (){
     fill(0,150,0)
   }
   textSize (15);
-  text ("Bills Per Year",0,20)
-  text ("Road Maintnance - $"+ owned.roads*2,0,40)
-  text ("House Maintnance - $"+ owned.houses*3,0, 60)
-  text ("Factory Maintnance - $"+ owned.factories*5,0, 80)
-  text ("Press B to Pay Bills", 0, 100)
+  text ("Bills Per Year",70,22)
+  text ("Road Maintnance - $"+ owned.roads*2,10,55)
+  text ("House Maintnance - $"+ owned.houses*3,10, 75)
+  text ("Factory Maintnance - $"+ owned.factories*5,10, 95)
+  text ("Press B to Pay Bills", 40, 120)
 }
 
 function lose(){
