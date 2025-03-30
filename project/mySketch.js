@@ -10,6 +10,7 @@ let smoke = [];
 let actions = [];
 let coin;
 let billspaid = false;
+let person;
 
 let player = {
   round: 1,
@@ -53,6 +54,7 @@ function preload() {
   highlightTile = loadImage("assets/highlightTile.png");
   road = loadImage("assets/road.png");
   coin = loadImage("assets/coin.png");
+  person = loadImage("assets/person.png");
 }
 
 function setup() {
@@ -504,7 +506,10 @@ function moneyTracker() {
   text(player.money, 905,40);
   image(coin, 850,21,);
   text(player.population, 805, 40);
+  person.resize(20,40)
+  image(person, 774, 15)
   text(owned.houses*4, 705, 40)
+  image(house, 670, 18)
 }
 
 function countPlaced(){
