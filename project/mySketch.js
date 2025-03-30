@@ -513,11 +513,9 @@ function moneyTracker() {
   text(player.money, 907,40);
   image(houseIcon,600,21);
   text(player.population, 777, 40);
-  image(person,735,21);
+  image(person,735,16);
   person.resize(20,40)
-  image(person, 774, 15)
   text(owned.houses*4, 647, 40)
-  image(house, 670, 18)
 }
 
 function countPlaced(){
