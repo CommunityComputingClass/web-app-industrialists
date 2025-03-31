@@ -3,6 +3,7 @@ let house;
 let road;
 let factory;
 let highlightTile;
+let tree;
 let tiles = [];
 let houses = [];
 let displayHouses = [];
@@ -38,7 +39,8 @@ let game = {
 let prices = {
   house: 100,
   road: 10,
-  factory: 1000
+  factory: 1000,
+  tree: 50
 }
 
 let mouse = {
@@ -54,6 +56,7 @@ function preload() {
   highlightTile = loadImage("assets/highlightTile.png");
   road = loadImage("assets/road.png");
   coin = loadImage("assets/coin.png");
+  tree = loadImage("assets/tree.png");
   myFont = loadFont ("assets/minecraftFont.otf")
   billBoard = loadImage ("assets/billBoard.png")
   moneyBoard = loadImage ("assets/moneyBoard.png")
@@ -104,19 +107,24 @@ function draw() {
   }
 
   if (mode == 1) {
-    if(player.money >= prices.road){
+    if (player.money >= prices.road) {
       Building.place(Road);
     }
-
   }
   if (mode == 2) {
-    if(player.money >= prices.house){
+    if (player.money >= prices.house) {
       Building.place(House);
     }
-
   }
+
   if (mode == 3) {
-    if(player.money >= prices.factory){
+    if (player.money >= prices.tree) {
+      Tree.place();
+    }
+  }
+
+  if (mode == 4) {
+    if (player.money >= prices.factory) {
       Building2.place(Factory);
     }
   }
@@ -149,6 +157,41 @@ class Tile {
     }
   }
 }
+
+class Tree {
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+    this.z = 1;
+  }
+
+  static place() {
+    for (let i in tiles) {
+      if (findDistance(mouse.x, mouse.y, tiles[i].x + 15, tiles[i].y + 8) < 7) {
+        tiles[i].highlight = true;
+        //console.log(tiles[i].highlight)
+        this.x = tiles[i].x;
+        this.y = tiles[i].y;
+
+        if (mouseIsPressed && tiles[i].full == false) {
+          houses.push(new Tree(this.x, this.y));
+          tiles[i].full = Tree;
+          actions.push(i);
+
+          player.money -= prices.tree;
+        }
+      } else {
+        tiles[i].highlight = false;
+      }
+    }
+  }
+
+  show() {
+    image(tree, this.x + 6, this.y - 29);
+  }
+}
+
+
 
 class Building {
   constructor(x, y) {
@@ -504,6 +547,8 @@ function findDistance(x1, y1, x2, y2) {
 }
 
 function moneyTracker() {
+  let y = player.round + 1760;
+
   fill("white")
   image(moneyBoard,900,15)
   image(moneyBoard,770,15)
@@ -516,6 +561,12 @@ function moneyTracker() {
   image(person,735,16);
   person.resize(20,40)
   text(owned.houses*4, 647, 40)
+  image(moneyBoard,510,15 )
+  text(player.pollution, 520, 40)
+  text("AQI", 480, 40)
+  image(moneyBoard, 480, 565)
+  text("Year", 495, 560)
+  text(y, 495, 590)
 }
 
 function countPlaced(){
@@ -535,18 +586,27 @@ function countPlaced(){
   }
 }
 function takeTurn(){
-  if (billspaid === true){
-    countPlaced()
-    player.money += owned.houses*10
-    player.money += owned.factories*500
-    player.round ++
-    player.population = Math.round(player.population*1.1)
-    player.pollution += owned.factories * 10
+  if (billspaid === true) {
+    countPlaced();
+    //money
+    player.money += owned.houses * 20 + owned.factories * 500;
+    //year
+    player.round++;
+    //population
+    player.population = Math.round(
+      player.population * (1.1 + owned.factories * 0.07)
+    );
     billspaid = false;
-    player.population = Math.round(player.population*1.1)
-    player.pollution += owned.factories * 10
-    if (player.population >= owned.houses*4){
-        lose();
+    //pollution
+    player.pollution =
+      Math.round((owned.houses * 0.2 + owned.factories * 10)/(1+owned.trees*0.01));
+
+    //lose conditions
+    if (player.population > owned.houses * 4) {
+      lose();
+    }
+    if (player.pollution >= 100) {
+      lose();
     }
   }
 }
