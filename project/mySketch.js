@@ -494,6 +494,9 @@ function keyPressed() {
   if (key === "3") {
     mode = 3;
   }
+  if(key === "4"){
+    mode = 4;
+  }
 
   if (key == "=") {
     game.scale *= 1 / 0.75;
@@ -567,6 +570,32 @@ function moneyTracker() {
   image(moneyBoard, 480, 565)
   text("Year", 495, 560)
   text(y, 495, 590)
+
+  image(billBoard, 690, 510, 190, 100)
+  fill("rgba(0,0,0,0.15)")
+  rect(660+mode*40, 540, 40, 57)
+  fill("black")
+
+
+  image(road, 705, 560)
+  fill("gray")
+  text("1", 715, 595)
+  text("$10", 705, 535)
+
+  image(house, 750, 540)
+  fill("black")
+  text("2", 755, 595)
+  text("$100", 740, 535)
+
+  image(tree, 790, 540)
+  fill("gray")
+  text("3", 795, 595)
+  text("$50", 785, 535)
+
+  image(factory, 820, 538, 45, 45)
+  fill("black")
+  text("4", 838, 595)
+  text("$1500", 820, 535)
 }
 
 function countPlaced(){
