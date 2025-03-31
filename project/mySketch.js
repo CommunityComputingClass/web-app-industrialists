@@ -33,7 +33,7 @@ let game = {
   mapH: 100,
   transX: 475,
   transY: 50,
-  scale: 1,
+  scale: 2,
 };
 
 let prices = {
