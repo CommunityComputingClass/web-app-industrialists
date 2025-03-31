@@ -535,10 +535,10 @@ function keyPressed() {
   }
   if (key === "b"){
     if (billspaid == false){
-      player.money -= owned.roads*2-owned.houses*3-owned.factories*5
+      player.money -= (owned.roads*2+owned.houses*3+owned.factories*5)
       billspaid = true;
     }
-    if (player.money < owned.roads*2 - owned.houses*3 - owned.factories*5){
+    if (player.money < (owned.roads*2 + owned.houses*3 + owned.factories*5)){
       lose (); 
     }
   }
@@ -629,6 +629,10 @@ function takeTurn(){
     //pollution
     player.pollution =
       Math.round((owned.houses * 0.2 + owned.factories * 10)/(1+owned.trees*0.01));
+    
+    //color
+    //game.bkg = 220-(player.pollution/2)
+
 
     //lose conditions
     if (player.population > owned.houses * 4) {
@@ -638,7 +642,8 @@ function takeTurn(){
       lose();
     }
   }
-}
+  }
+
 
 function bills (){
   fill(255)
