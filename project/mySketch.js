@@ -66,6 +66,7 @@ function preload() {
   person = loadImage("assets/person.png");
   houseIcon = loadImage("assets/houseIcon.png");
   person = loadImage("assets/person.png");
+  ruleBoard = loadImage("assets/ruleBoard.png");
 }
 
 function setup() {
@@ -680,11 +681,13 @@ function bills() {
 }
 
 //Rule Screen
-function ruleScreen (){
-textSize(25);
-text("        Welcome to the \n Industrial Revolution Game", 300, 100);
+//function ruleScreen (){
+//image(ruleBoard, 200, 25)
+//billBoard.resize(5)
+//textSize(25);
+//text("        Welcome to the \n Industrial Revolution Game", 300, 100);
 
-}
+//}
 
 function lose() {
   window.open("https://www.youtube.com/watch?v=dQw4w9WgXcQ");
