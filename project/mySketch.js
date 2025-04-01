@@ -15,7 +15,7 @@ let person;
 
 let player = {
   round: 1,
-  money: 1000,
+  money: 500,
   pollution: 0,
   population: 10,
 
@@ -78,7 +78,7 @@ function setup() {
 }
 
 function draw() {
-  background(220);
+  background(230-player.pollution*2);
 
   push()
   translate(game.transX, game.transY);
@@ -537,10 +537,12 @@ function keyPressed() {
     if (billspaid == false){
       player.money -= (owned.roads*2+owned.houses*3+owned.factories*5)
       billspaid = true;
+
+      if (player.money < (owned.roads*2 + owned.houses*3 + owned.factories*5)){
+        lose (); 
+      }
     }
-    if (player.money < (owned.roads*2 + owned.houses*3 + owned.factories*5)){
-      lose (); 
-    }
+
   }
 
 }
@@ -561,6 +563,8 @@ function moneyTracker() {
   text(player.money, 907,40);
   image(houseIcon,600,21);
   text(player.population, 777, 40);
+  text("(+"+(Math.round(
+    player.population * (1.05 + owned.factories * 0.03+owned.houses*0.001))-player.population)+")", 770, 70)
   image(person,735,16);
   person.resize(20,40)
   text(owned.houses*4, 647, 40)
@@ -602,6 +606,7 @@ function countPlaced(){
   owned.houses = 0;
   owned.roads = 0;
   owned.factories = 0;
+  owned.trees = 0;
   for (let i = 0; i < houses.length; i++) {
     if (houses[i].constructor.name === "House") {
       owned.houses++;
@@ -612,19 +617,21 @@ function countPlaced(){
     if (houses[i].constructor.name === "Factory"){
       owned.factories++;
     }
+    if(houses[i].constructor.name === "Tree"){
+      owned.trees++
+    }
   }
 }
 function takeTurn(){
   if (billspaid === true) {
     countPlaced();
     //money
-    player.money += owned.houses * 20 + owned.factories * 500;
+    player.money += owned.houses * 20 + owned.factories * 700;
     //year
     player.round++;
     //population
     player.population = Math.round(
-      player.population * (1.1 + owned.factories * 0.07)
-    );
+player.population * (1.05 + owned.factories * 0.03+owned.houses*0.001))
     billspaid = false;
     //pollution
     player.pollution =
@@ -665,6 +672,6 @@ function bills (){
 
 function lose(){
   window.open ("https://www.youtube.com/watch?v=dQw4w9WgXcQ")
-  window.close();
+  //window.close();
 }
 
