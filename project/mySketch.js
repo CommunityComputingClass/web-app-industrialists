@@ -4,6 +4,11 @@ let road;
 let factory;
 let highlightTile;
 let tree;
+let billBoard;
+let moneyBoard;
+let person;
+let houseIcon;
+let myFont;
 let tiles = [];
 let houses = [];
 let displayHouses = [];
@@ -11,22 +16,19 @@ let smoke = [];
 let actions = [];
 let coin;
 let billspaid = false;
-let person;
 
 let player = {
   round: 1,
   money: 500,
   pollution: 0,
   population: 10,
-
 };
 let owned = {
   roads: 0,
   houses: 0,
   factories: 0,
-  trees: 0
-
-}
+  trees: 0,
+};
 
 let game = {
   mapW: 100,
@@ -39,9 +41,9 @@ let game = {
 let prices = {
   house: 100,
   road: 10,
-  factory: 1000,
-  tree: 50
-}
+  factory: 1500,
+  tree: 50,
+};
 
 let mouse = {
   x: 0,
@@ -57,11 +59,11 @@ function preload() {
   road = loadImage("assets/road.png");
   coin = loadImage("assets/coin.png");
   tree = loadImage("assets/tree.png");
-  myFont = loadFont ("assets/minecraftFont.otf")
-  billBoard = loadImage ("assets/billBoard.png")
-  moneyBoard = loadImage ("assets/moneyBoard.png")
-  person = loadImage ("assets/person.png")
-  houseIcon = loadImage ("assets/houseIcon.png")
+  myFont = loadFont("assets/minecraftFont.otf");
+  billBoard = loadImage("assets/billBoard.png");
+  moneyBoard = loadImage("assets/moneyBoard.png");
+  person = loadImage("assets/person.png");
+  houseIcon = loadImage("assets/houseIcon.png");
   person = loadImage("assets/person.png");
 }
 
@@ -78,9 +80,9 @@ function setup() {
 }
 
 function draw() {
-  background(230-player.pollution*2);
+  background(230 - player.pollution * 2);
 
-  push()
+  push();
   translate(game.transX, game.transY);
   scale(game.scale);
   //mouse
@@ -128,7 +130,7 @@ function draw() {
       Building2.place(Factory);
     }
   }
-  pop()
+  pop();
   countPlaced();
   bills();
   moneyTracker();
@@ -191,8 +193,6 @@ class Tree {
   }
 }
 
-
-
 class Building {
   constructor(x, y) {
     this.x = x;
@@ -215,11 +215,11 @@ class Building {
           houses.push(new type(this.x, this.y));
           tiles[i].full = type;
           actions.push(i);
-          if(type == Road){
-            player.money -= prices.road
+          if (type == Road) {
+            player.money -= prices.road;
           }
-          if(type == House){
-            player.money -= prices.house
+          if (type == House) {
+            player.money -= prices.house;
           }
         }
       } else {
@@ -402,10 +402,10 @@ class Building2 {
             tiles[ind + 1].full = type;
             tiles[ind + game.mapW].full = type;
             tiles[ind + game.mapW + 1].full = type;
-            actions.push(i)
-            if(type == Factory){
-              player.money -= prices.factory
-          }
+            actions.push(i);
+            if (type == Factory) {
+              player.money -= prices.factory;
+            }
           }
         }
       } else {
@@ -494,7 +494,7 @@ function keyPressed() {
   if (key === "3") {
     mode = 3;
   }
-  if(key === "4"){
+  if (key === "4") {
     mode = 4;
   }
 
@@ -505,17 +505,14 @@ function keyPressed() {
     game.scale *= 0.75;
   }
   if (key == "z") {
-    let index = parseInt(actions[actions.length -1])
+    let index = parseInt(actions[actions.length - 1]);
     if (houses.length > 1) {
       if (houses[houses.length - 1].type == "factory") {
-
         tiles[index].full = false;
         tiles[index + 1].full = false;
-        tiles[index+game.mapW].full = false;
-        tiles[index+game.mapW+1].full = false;
-        smoke.pop()
-        
-
+        tiles[index + game.mapW].full = false;
+        tiles[index + game.mapW + 1].full = false;
+        smoke.pop();
       } else {
         tiles[actions[actions.length - 1]].full = false;
       }
@@ -523,28 +520,29 @@ function keyPressed() {
       houses.pop();
     }
   }
-  if (key === " "){
-    takeTurn()
+  if (key === " ") {
+    takeTurn();
   }
 
   if (key === "h") {
-    countPlaced()
-    console.log(owned.houses)
-    console.log(owned.roads)
-    console.log(owned.factories)
+    countPlaced();
+    console.log(owned.houses);
+    console.log(owned.roads);
+    console.log(owned.factories);
   }
-  if (key === "b"){
-    if (billspaid == false){
-      player.money -= (owned.roads*2+owned.houses*3+owned.factories*5)
+  if (key === "b") {
+    if (billspaid == false) {
+      player.money -= owned.roads * 2 + owned.houses * 3 + owned.factories * 5;
       billspaid = true;
 
-      if (player.money < (owned.roads*2 + owned.houses*3 + owned.factories*5)){
-        lose (); 
+      if (
+        player.money <
+        owned.roads * 2 + owned.houses * 3 + owned.factories * 5
+      ) {
+        lose();
       }
     }
-
   }
-
 }
 
 function findDistance(x1, y1, x2, y2) {
@@ -554,55 +552,63 @@ function findDistance(x1, y1, x2, y2) {
 function moneyTracker() {
   let y = player.round + 1760;
 
-  fill("white")
-  image(moneyBoard,900,15)
-  image(moneyBoard,770,15)
-  image(moneyBoard,640,15)
-  fill("black")
-  image(coin, 850,21,);
-  text(player.money, 907,40);
-  image(houseIcon,600,21);
+  fill("white");
+  image(moneyBoard, 900, 15);
+  image(moneyBoard, 770, 15);
+  image(moneyBoard, 640, 15);
+  fill("black");
+  image(coin, 850, 21);
+  text(player.money, 907, 40);
+  image(houseIcon, 600, 21);
   text(player.population, 777, 40);
-  text("(+"+(Math.round(
-    player.population * (1.05 + owned.factories * 0.03+owned.houses*0.001))-player.population)+")", 770, 70)
-  image(person,735,16);
-  person.resize(20,40)
-  text(owned.houses*4, 647, 40)
-  image(moneyBoard,510,15 )
-  text(player.pollution, 520, 40)
-  text("AQI", 480, 40)
-  image(moneyBoard, 480, 565)
-  text("Year", 495, 560)
-  text(y, 495, 590)
+  text(
+    "(+" +
+      (Math.round(
+        player.population *
+          (1.05 + owned.factories * 0.03 + owned.houses * 0.0005)
+      ) -
+        player.population) +
+      ")",
+    770,
+    70
+  );
+  image(person, 735, 16);
+  person.resize(20, 40);
+  text(owned.houses * 4, 647, 40);
+  image(moneyBoard, 510, 15);
+  text(player.pollution, 520, 40);
+  text("AQI", 480, 40);
+  image(moneyBoard, 480, 565);
+  text("Year", 495, 560);
+  text(y, 495, 590);
 
-  image(billBoard, 690, 510, 190, 100)
-  fill("rgba(0,0,0,0.15)")
-  rect(660+mode*40, 540, 40, 57)
-  fill("black")
+  image(billBoard, 690, 510, 190, 100);
+  fill("rgba(0,0,0,0.15)");
+  rect(660 + mode * 40, 540, 40, 57);
+  fill("black");
 
+  image(road, 705, 560);
+  fill("gray");
+  text("1", 715, 595);
+  text("$10", 705, 535);
 
-  image(road, 705, 560)
-  fill("gray")
-  text("1", 715, 595)
-  text("$10", 705, 535)
+  image(house, 750, 540);
+  fill("black");
+  text("2", 755, 595);
+  text("$100", 740, 535);
 
-  image(house, 750, 540)
-  fill("black")
-  text("2", 755, 595)
-  text("$100", 740, 535)
+  image(tree, 790, 540);
+  fill("gray");
+  text("3", 795, 595);
+  text("$50", 785, 535);
 
-  image(tree, 790, 540)
-  fill("gray")
-  text("3", 795, 595)
-  text("$50", 785, 535)
-
-  image(factory, 820, 538, 45, 45)
-  fill("black")
-  text("4", 838, 595)
-  text("$1500", 820, 535)
+  image(factory, 820, 538, 45, 45);
+  fill("black");
+  text("4", 838, 595);
+  text("$1500", 820, 535);
 }
 
-function countPlaced(){
+function countPlaced() {
   owned.houses = 0;
   owned.roads = 0;
   owned.factories = 0;
@@ -611,18 +617,18 @@ function countPlaced(){
     if (houses[i].constructor.name === "House") {
       owned.houses++;
     }
-    if (houses[i].constructor.name === "Road"){
+    if (houses[i].constructor.name === "Road") {
       owned.roads++;
     }
-    if (houses[i].constructor.name === "Factory"){
+    if (houses[i].constructor.name === "Factory") {
       owned.factories++;
     }
-    if(houses[i].constructor.name === "Tree"){
-      owned.trees++
+    if (houses[i].constructor.name === "Tree") {
+      owned.trees++;
     }
   }
 }
-function takeTurn(){
+function takeTurn() {
   if (billspaid === true) {
     countPlaced();
     //money
@@ -631,15 +637,17 @@ function takeTurn(){
     player.round++;
     //population
     player.population = Math.round(
-player.population * (1.05 + owned.factories * 0.03+owned.houses*0.001))
+      player.population *
+        (1.05 + owned.factories * 0.03 + owned.houses * 0.0005)
+    );
     billspaid = false;
     //pollution
-    player.pollution =
-      Math.round((owned.houses * 0.2 + owned.factories * 10)/(1+owned.trees*0.01));
-    
+    player.pollution = Math.round(
+      (owned.houses * 0.2 + owned.factories * 10) / (1 + owned.trees * 0.01)
+    );
+
     //color
     //game.bkg = 220-(player.pollution/2)
-
 
     //lose conditions
     if (player.population > owned.houses * 4) {
@@ -649,29 +657,27 @@ player.population * (1.05 + owned.factories * 0.03+owned.houses*0.001))
       lose();
     }
   }
-  }
-
-
-function bills (){
-  fill(255)
-  noStroke()
-  image(billBoard,0,0)
-  if (billspaid === false){
-    fill(255,0,0)
-  }
-  if (billspaid === true){
-    fill(0,150,0)
-  }
-  textSize (15);
-  text ("Bills Per Year",70,22)
-  text ("Road Maintnance - $"+ owned.roads*2,10,55)
-  text ("House Maintnance - $"+ owned.houses*3,10, 75)
-  text ("Factory Maintnance - $"+ owned.factories*5,10, 95)
-  text ("Press B to Pay Bills", 40, 120)
 }
 
-function lose(){
-  window.open ("https://www.youtube.com/watch?v=dQw4w9WgXcQ")
+function bills() {
+  fill(255);
+  noStroke();
+  image(billBoard, 0, 0);
+  if (billspaid === false) {
+    fill(255, 0, 0);
+  }
+  if (billspaid === true) {
+    fill(0, 150, 0);
+  }
+  textSize(15);
+  text("Bills Per Year", 70, 22);
+  text("Road Maintnance - $" + owned.roads * 2, 10, 55);
+  text("House Maintnance - $" + owned.houses * 3, 10, 75);
+  text("Factory Maintnance - $" + owned.factories * 5, 10, 95);
+  text("Press B to Pay Bills", 40, 120);
+}
+
+function lose() {
+  window.open("https://www.youtube.com/watch?v=dQw4w9WgXcQ");
   //window.close();
 }
-
