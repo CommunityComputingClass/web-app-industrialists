@@ -6,6 +6,7 @@ let highlightTile;
 let tree;
 let billBoard;
 let moneyBoard;
+let ruleBoard;
 let person;
 let houseIcon;
 let myFont;
@@ -134,6 +135,7 @@ function draw() {
   countPlaced();
   bills();
   moneyTracker();
+  ruleScreen();
 }
 
 class Tile {
@@ -675,6 +677,13 @@ function bills() {
   text("House Maintnance - $" + owned.houses * 3, 10, 75);
   text("Factory Maintnance - $" + owned.factories * 5, 10, 95);
   text("Press B to Pay Bills", 40, 120);
+}
+
+//Rule Screen
+function ruleScreen (){
+textSize(25);
+text("        Welcome to the \n Industrial Revolution Game", 300, 100);
+
 }
 
 function lose() {
