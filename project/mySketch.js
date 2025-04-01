@@ -7,6 +7,7 @@ let tree;
 let billBoard;
 let moneyBoard;
 let ruleBoard;
+let closeRules;
 let person;
 let houseIcon;
 let myFont;
@@ -79,6 +80,7 @@ function setup() {
   houses.push(new Road(0, 0));
   //tiles[game.mapW*game.mapH].full = Road;
   //houses.push(new Road(tiles[game.mapW*game.mapH].x, tiles[game.mapW*game.mapH].y))
+  
 }
 
 function draw() {
@@ -681,13 +683,14 @@ function bills() {
 }
 
 //Rule Screen
-//function ruleScreen (){
-//image(ruleBoard, 200, 25)
-//billBoard.resize(5)
-//textSize(25);
-//text("        Welcome to the \n Industrial Revolution Game", 300, 100);
+function ruleScreen (){
+image(ruleBoard, 170, 25)
+textSize(25);
+text("        Welcome to the \n Industrial Revolution Game", 310, 100);
+closeRules = createButton("X");
+closeRules.position(870,575)
+}
 
-//}
 
 function lose() {
   window.open("https://www.youtube.com/watch?v=dQw4w9WgXcQ");
